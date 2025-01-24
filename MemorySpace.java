@@ -59,9 +59,11 @@ public class MemorySpace {
 	 */
 	public int malloc(int length) {		
 		//// Replace the following statement with your code
+		if (freeList.getSize()>0) {
 		for(int i=0; i<freeList.getSize(); i++){
 			int blockLength = freeList.getBlock(i).length;
 			int blockAdress = freeList.getBlock(i).baseAddress;
+			if (freeList.getBlock(i) !=null) {
 			if (blockLength > length) {
 				allocatedList.addLast(new MemoryBlock(blockAdress, length));
 				blockLength = blockLength - length;
@@ -75,6 +77,8 @@ public class MemorySpace {
 				}
 			}
 		}
+	}
+	}
 		
 		return -1;
 	}
@@ -89,13 +93,15 @@ public class MemorySpace {
 	 */
 	public void free(int address) {
 		//// Write your code here
+		if (freeList.getSize() > 0 && allocatedList.getSize() > 0) {
 		for(int i=0; i<allocatedList.getSize(); i++){
-			if (allocatedList.getBlock(i).baseAddress == address) {
+			if (allocatedList.getBlock(i).baseAddress == address && allocatedList.getBlock(i) != null) {
 				allocatedList.remove(allocatedList.getBlock(i));
 				freeList.addLast(allocatedList.getBlock(i));
 				break;
 			}
 		}
+	}
 	} 
 	
 	/**
