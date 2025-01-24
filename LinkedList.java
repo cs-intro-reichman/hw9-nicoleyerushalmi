@@ -84,11 +84,15 @@ public class LinkedList {
 		if (index < 0 || index > size) {
 			throw new IllegalArgumentException("index must be between 0 and size");
 		}
+		if (block !=null) {
 		Node newNode = new Node(block);
 		if (index == 0) {
 			//new first node
 			newNode.next = first;
 			first = newNode;
+			if (size == 0) {
+				last = newNode;
+			}
 		}else{
 			if (index == size) {
 				//new last node
@@ -101,6 +105,7 @@ public class LinkedList {
 
 		}
 		size++;
+	}
 	}
 
 	/**
