@@ -55,7 +55,10 @@ public class LinkedList {
 					"index must be between 0 and size");
 		}
 		//// Replace the following statement with your code
-		return null;
+		Node IndexNode = this.first;
+		for(int i=0; i< index; i++)
+			{IndexNode = IndexNode.next;}
+			return IndexNode;
 	}
 	
 	/**
@@ -78,7 +81,26 @@ public class LinkedList {
 	 *         if index is negative or greater than the list's size
 	 */
 	public void add(int index, MemoryBlock block) {
-		//// Write your code here
+		if (index < 0 || index > size) {
+			throw new IllegalArgumentException("index must be between 0 and size");
+		}
+		Node newNode = new Node(block);
+		if (index == 0) {
+			//new first node
+			newNode.next = first;
+			first = newNode;
+		}else{
+			if (index == size) {
+				//new last node
+				last.next = newNode;
+				last = newNode;
+			}else{
+				newNode.next = getNode(index);
+				getNode(index - 1). next = newNode;
+			}
+
+		}
+		size++;
 	}
 
 	/**
@@ -90,6 +112,7 @@ public class LinkedList {
 	 */
 	public void addLast(MemoryBlock block) {
 		//// Write your code here
+		add(size, block);
 	}
 	
 	/**
@@ -101,6 +124,7 @@ public class LinkedList {
 	 */
 	public void addFirst(MemoryBlock block) {
 		//// Write your code here
+		add(0, block);
 	}
 
 	/**
@@ -114,7 +138,7 @@ public class LinkedList {
 	 */
 	public MemoryBlock getBlock(int index) {
 		//// Replace the following statement with your code
-		return null;
+		return getNode(index).block;
 	}	
 
 	/**
@@ -126,6 +150,11 @@ public class LinkedList {
 	 */
 	public int indexOf(MemoryBlock block) {
 		//// Replace the following statement with your code
+		for(int i=0; i<size; i++){
+			if (getBlock(i) == block) {
+				return i;
+			}
+		}
 		return -1;
 	}
 
@@ -137,6 +166,24 @@ public class LinkedList {
 	 */
 	public void remove(Node node) {
 		//// Write your code here
+		if (node == first) {
+			// remove the first one
+			first = node.next;
+			if (first == null) {
+				last = null;
+			}
+		}else{
+			if (node == last) {
+				// remove the last node
+				last = getNode(size - 2); //do i need to remove 1 or 2 from size?
+				last.next = null;
+			}else{
+				Node tempNude = node.next;
+				Node tempPre =getNode(indexOf(node.block) - 1);
+				tempPre.next = tempNude;
+			}
+		}
+		size --;
 	}
 
 	/**
@@ -148,6 +195,8 @@ public class LinkedList {
 	 */
 	public void remove(int index) {
 		//// Write your code here
+		remove(getNode(index));
+		
 	}
 
 	/**
@@ -159,6 +208,7 @@ public class LinkedList {
 	 */
 	public void remove(MemoryBlock block) {
 		//// Write your code here
+		remove(indexOf(block));
 	}	
 
 	/**
@@ -173,6 +223,6 @@ public class LinkedList {
 	 */
 	public String toString() {
 		//// Replace the following statement with your code
-		return "";
+		return "first: " + this.first+ "\n" + "last: " + this.last + "\n" + "size: " + this.size + "\n";
 	}
 }
