@@ -59,27 +59,29 @@ public class MemorySpace {
 	 */
 	public int malloc(int length) {		
 		//// Replace the following statement with your code
-		if (freeList.getSize()>0) {
-		for(int i=0; i<freeList.getSize(); i++){
-			int blockLength = freeList.getBlock(i).length;
-			int blockAdress = freeList.getBlock(i).baseAddress;
-			if (freeList.getBlock(i) !=null) {
+		if (freeList.getSize()>0 && length >0) {
+			Node newNode = freeList.getFirst();
+		while(newNode != null){
+			int blockLength = newNode.block.length;
+			int blockAdress = newNode.block.baseAddress;
+			if (blockLength == length) {
+				MemoryBlock allMemoryBlock = new MemoryBlock(blockAdress, length);
+				allocatedList.addLast(allMemoryBlock);
+				freeList.remove(newNode.block);
+				return allMemoryBlock.baseAddress;
+			}
 			if (blockLength > length) {
-				allocatedList.addLast(new MemoryBlock(blockAdress, length));
+				MemoryBlock allMemoryBlock = new MemoryBlock(blockAdress, length);
+				allocatedList.addLast(allMemoryBlock);
 				blockLength = blockLength - length;
 				blockAdress = blockAdress + length;
-				return allocatedList.getBlock(allocatedList.getSize()).baseAddress;
-			}else{
-				if (blockLength == length) {
-					allocatedList.addLast(new MemoryBlock(blockAdress, length));
-					freeList.remove(freeList.getBlock(i));
-					return allocatedList.getBlock(allocatedList.getSize()).baseAddress;
-				}
+				return allMemoryBlock.baseAddress;
 			}
-		}
+				
+			
+			newNode = newNode.next;
 	}
 	}
-		
 		return -1;
 	}
 
@@ -93,7 +95,7 @@ public class MemorySpace {
 	 */
 	public void free(int address) {
 		//// Write your code here
-		if (freeList.getSize() > 0 && allocatedList.getSize() > 0) {
+		if (freeList.getSize() > 0 && allocatedList.getSize() > 0 && address > 0) {
 		for(int i=0; i<allocatedList.getSize(); i++){
 			if (allocatedList.getBlock(i).baseAddress == address && allocatedList.getBlock(i) != null) {
 				allocatedList.remove(allocatedList.getBlock(i));
@@ -102,7 +104,7 @@ public class MemorySpace {
 			}
 		}
 	}
-	} 
+}
 	
 	/**
 	 * A textual representation of the free list and the allocated list of this memory space, 
@@ -121,4 +123,5 @@ public class MemorySpace {
 		/// TODO: Implement defrag test
 		//// Write your code here
 	}
+}
 }
