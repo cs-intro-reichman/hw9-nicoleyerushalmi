@@ -57,31 +57,31 @@ public class MemorySpace {
 	 *        the length (in words) of the memory block that has to be allocated
 	 * @return the base address of the allocated block, or -1 if unable to allocate
 	 */
-	public int malloc(int length) {		
+	public int malloc(int length){		
 		//// Replace the following statement with your code
-		if (freeList.getSize()>0 && length >0) {
+		if (length <= 0){
+			return -1;
+		}
 			Node newNode = freeList.getFirst();
-		while(newNode != null){
-			int blockLength = newNode.block.length;
-			int blockAdress = newNode.block.baseAddress;
-			if (blockLength == length) {
-				MemoryBlock allMemoryBlock = new MemoryBlock(blockAdress, length);
-				allocatedList.addLast(allMemoryBlock);
-				freeList.remove(newNode.block);
-				return allMemoryBlock.baseAddress;
+			while (newNode != null){
+				int blockLength = newNode.block.length;
+				int blockAdress = newNode.block.baseAddress;
+				if (newNode.block.length >= length) {
+					MemoryBlock allMemoryBlock = new MemoryBlock(blockAdress, length);
+					allocatedList.addLast(allMemoryBlock);
+					if (blockLength == length) {
+						Node temp = newNode;
+						newNode = newNode.next;
+						freeList.remove(temp);
+					}else{
+						blockLength = blockLength - length;
+						blockAdress = blockAdress + length;
+					}
+					return allMemoryBlock.baseAddress;
+				}
+				newNode = newNode.next;
 			}
-			if (blockLength > length) {
-				MemoryBlock allMemoryBlock = new MemoryBlock(blockAdress, length);
-				allocatedList.addLast(allMemoryBlock);
-				blockLength = blockLength - length;
-				blockAdress = blockAdress + length;
-				return allMemoryBlock.baseAddress;
-			}
-				
-			
-			newNode = newNode.next;
-	}
-	}
+		
 		return -1;
 	}
 
@@ -122,6 +122,6 @@ public class MemorySpace {
 	public void defrag() {
 		/// TODO: Implement defrag test
 		//// Write your code here
+		
 	}
-}
 }

@@ -228,6 +228,12 @@ public class LinkedList {
 	 */
 	public String toString() {
 		//// Replace the following statement with your code
-		return "first: " + this.first+ "\n" + "last: " + this.last + "\n" + "size: " + this.size + "\n";
+		String res = "";
+    	Node current = first;
+    	for(int i = 0 ; i < size ; i ++) {
+        	res += current.block.toString() + " "; 
+        	current = current.next; 
+		}
+    	return res;
 	}
 }
