@@ -74,8 +74,8 @@ public class MemorySpace {
 						newNode = newNode.next;
 						freeList.remove(temp);
 					}else{
-						blockLength = blockLength - length;
-						blockAdress = blockAdress + length;
+						newNode.block.length = blockLength - length;
+						newNode.block.baseAddress = blockAdress + length;
 					}
 					return allMemoryBlock.baseAddress;
 				}
