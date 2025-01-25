@@ -95,7 +95,7 @@ public class MemorySpace {
 	 */
 	public void free(int address) {
 		//// Write your code here
-		if (freeList.getSize() > 0) {
+		if (freeList.getSize() >= 0) {
 			Node newNode = allocatedList.getFirst();
 		while (newNode != null) {
 			if (newNode.block.baseAddress == address && newNode.block != null) {
