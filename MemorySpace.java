@@ -96,16 +96,17 @@ public class MemorySpace {
 	public void free(int address) {
 		//// Write your code here
 		
-		if (freeList.getSize() == 0) {
+		if (allocatedList.getSize() == 0) {
 			throw new IllegalArgumentException("index must be between 0 and size");}
-			else{
-			Node newNode = allocatedList.getFirst();
+		else{
+		Node newNode = allocatedList.getFirst();
 		while (newNode != null) {
 			if (newNode.block.baseAddress == address && newNode.block != null) {
-				allocatedList.remove(newNode.block);
-				freeList.addLast(newNode.block);
+				MemoryBlock temp = newNode.block;
 				newNode = newNode.next;
-				break;
+				allocatedList.remove(temp);
+				freeList.addLast(temp);
+				return;
 			}
 			newNode = newNode.next;
 		}
