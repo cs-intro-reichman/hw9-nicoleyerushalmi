@@ -95,7 +95,10 @@ public class MemorySpace {
 	 */
 	public void free(int address) {
 		//// Write your code here
-		if (freeList.getSize() != 0) {
+		
+		if (freeList.getSize() == 0) {
+			throw new IllegalArgumentException("index must be between 0 and size");}
+			else{
 			Node newNode = allocatedList.getFirst();
 		while (newNode != null) {
 			if (newNode.block.baseAddress == address && newNode.block != null) {
@@ -106,8 +109,6 @@ public class MemorySpace {
 			}
 			newNode = newNode.next;
 		}
-	}else{
-		throw new IllegalArgumentException("index must be between 0 and size");
 	}
 }
 	
