@@ -140,10 +140,9 @@ public class MemorySpace {
 			}else{
 				nextNode = nextNode.next;
 			}
+		}
 			newNode = newNode.next;
 
 		}
-		
-	}
 }
 }
